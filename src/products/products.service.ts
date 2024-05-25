@@ -11,7 +11,9 @@ export class ProductsService {
   ) {}
 
   async findAllProducts(): Promise<ProductDto[]> {
-    const list = await this.dataSource.query(`SELECT * FROM products`);
+    const list = await this.dataSource.query(
+      `SELECT * FROM ecommerce_products`,
+    );
     return list;
   }
 }

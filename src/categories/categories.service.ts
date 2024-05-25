@@ -10,7 +10,9 @@ export class CategoriesService {
   ) {}
 
   async findAllCategories(): Promise<CategoryDto[]> {
-    const list = await this.dataSource.query(`SELECT * FROM categories`);
+    const list = await this.dataSource.query(
+      `SELECT * FROM ecommerce_categories`,
+    );
     console.log({ list });
     return list;
   }
@@ -18,20 +20,20 @@ export class CategoriesService {
   async findByName(categoryName: string) {
     const product = await this.dataSource.query(
       `SELECT 
-        products.id,
-        products.url,
-        products.precio,
-        products.descripcion,
-        images.imagen,
-        categories.nombre
-      FROM 
-        products 
-      JOIN 
-        categories ON products.id_categorias = categories.id
-      LEFT JOIN 
-        images ON products.id = images.id_producto
-      WHERE 
-        categories.url = ?`,
+      ecommerce_products.id,
+      ecommerce_products.url,
+      ecommerce_products.precio,
+      ecommerce_products.descripcion,
+      ecommerce_images.imagen,
+      ecommerce_categories.nombre
+    FROM 
+      ecommerce_products 
+    JOIN 
+      ecommerce_categories ON ecommerce_products.id_categorias = ecommerce_categories.id
+    LEFT JOIN 
+      ecommerce_images ON ecommerce_products.id = ecommerce_images.id_producto
+    WHERE 
+      ecommerce_categories.url = '?`,
       [categoryName],
     );
     console.log('product 22222222 ===> ', product);
