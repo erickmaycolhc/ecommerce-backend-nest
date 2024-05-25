@@ -1,0 +1,125 @@
+ e-commerce 
+
+fronted	: next.js 
+backend : nest.js  
+BD	: MySQL
+
+
+
+
+
+tabla : producto
+id
+- imágenes 
+- nombre del producto
+- precio
+- id_categorías
+- descripción 
+// - colores del producto
+- estado 
+- fecha del registro
+
+
+
+tabla : imágenes 
+- id 
+- id_producto
+- imagen 
+- fecha del registro
+- estado
+
+
+tabla : categorías
+- id
+- nombre
+- fecha del registro
+- estado
+
+
+buscar por categoría 
+
+y mostrar los productos de la categoria
+
+
+CREATE DATABASE ECOMMERCE;
+
+CREATE TABLE products(
+     id SERIAL PRIMARY KEY NOT NULL,
+     nombre_del_producto VARCHAR(100) NOT NULL,
+     id_categorias INT NOT NULL,
+     precio VARCHAR(10) NOT NULL,
+     descripcion VARCHAR(200) NOT NULL,
+     fecha_de_registro date NOT NULL,
+     estado enum('activo','inactivo')
+);
+
+CREATE TABLE images(
+     id SERIAL PRIMARY KEY NOT NULL,
+     id_producto INT NOT NULL,
+     imagen VARCHAR(200) NOT NULL,
+     fecha_de_registro date NOT NULL,
+     estado enum('activo','inactivo')
+);
+
+CREATE TABLE categories(
+     id SERIAL PRIMARY KEY NOT NULL,
+     nombre VARCHAR(50) NOT NULL,
+     fecha_de_registro date NOT NULL,
+     estado enum('activo','inactivo')
+);
+
+
+
+INSERT INTO `products`(`id`, `nombre_del_producto`, `id_imagenes`, `id_categorias`, `precio`, `descripcion`, `fecha_de_registro`, `estado`) VALUES 
+(2, 'Smartphone', 2, 1, '200.00', 'Teléfono inteligente con pantalla de 6.5 pulgadas', NOW(), 'activo'),
+(3, 'Tablet', 3, 1, '150.00', 'Tablet con sistema operativo Android y 64GB de almacenamiento', NOW(), 'activo'),
+(4, 'Monitor', 4, 2, '100.00', 'Monitor LED de 24 pulgadas Full HD', NOW(), 'activo'),
+(5, 'Teclado', 5, 3, '30.00', 'Teclado mecánico con retroiluminación RGB', NOW(), 'activo'),
+(6, 'Ratón', 6, 3, '20.00', 'Ratón inalámbrico ergonómico con sensor óptico', NOW(), 'activo');
+
+
+tecnologías
+polos
+pantalones
+zapatos
+accesorios
+juguetes
+muebles
+
+
+
+
+1
+https://p1-ofp.static.pub//medias/25730676944_CG_MEALNP_202304120105021694841498625.png
+
+2
+https://exclusiveshopperu.com/wp-content/uploads/Nike-Air-Force-1-Drake-Nocta-1.jpg
+
+3
+https://png.pngtree.com/background/20230611/original/pngtree-white-gold-and-diamond-chain-bracelet-on-a-black-background-picture-image_3169299.jpg
+
+4
+https://assets2.razerzone.com/images/pnx.assets/7f39feb6aff2401707b491d36cd1cd39/razer-iskur.jpg
+
+5
+https://cdn-images.farfetch-contents.com/19/15/91/42/19159142_42125551_1000.jpg
+
+6
+https://i.ebayimg.com/thumbs/images/g/PVUAAOSwBhRmCzDi/s-l640.jpg
+
+7
+https://plazavea.vteximg.com.br/arquivos/ids/26158862-650-650/20268940.jpg
+
+
+
+INSERT INTO products (nombre_del_producto, id_categorias, precio, descripcion, fecha_de_registro, estado) VALUES 
+('Silla Raze', 1, '1900', 'Rango de inclinación del respaldo de 90°x139°, cómodos apoyabrazos.', NOW(), 'activo'),
+('Air Force 1', 4, '350', 'El fulgor vive en el Nike Air Force 1 ’07, el OG de básquetbol que le da un toque fresco a lo que mejor conoces.', NOW(), 'activo'),
+('Cadena Cubana', 5, '500', 'PRODUCTO INOXIDABLE, Además de ser especial para personas que sufren de alergias.', NOW(), 'activo'),
+('Juego de Comedor Stefani', 7, '1700', 'La mesa de comedor es rectangular, muy espaciosa y posee el pie en pedestal. Es una opción que agrega belleza y confort, pues posee espacio ideal para acomodar perfectamente las piernas.', NOW(), 'activo'),
+('Polo Amiri', 2, '900', 'Mezcla de algodón y lino, ribete en contraste y manga corta.', NOW(), 'activo'),
+('Casa de Muñeca de Madera Scoop', 6, '250', 'Desarrollo cognitivo, juegos de mesa, muñecas, personajes de películas, vehículos y mucho más.', NOW(), 'activo'),
+('Pantalón Jean Denim EUREKA', 3, '120', 'Excelente para la moda primavera y material principal algodón.', NOW(), 'activo')
+
+
+
