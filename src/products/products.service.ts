@@ -11,25 +11,53 @@ export class ProductsService {
   ) {}
 
   async findAllProducts(): Promise<ProductDto[]> {
-    const list = await this.dataSource.query(
+    const resultQuery = await this.dataSource.query(
       `SELECT 
-      ecommerce_products.nombre_del_producto as 'products_name',
-      ecommerce_categories.nombre as 'category_name',
-      ecommerce_categories.url as 'category_url',
-      ecommerce_images.imagen as 'url',
-    ecommerce_products.precio,
-      ecommerce_products.descripcion,
-      ecommerce_products.fecha_de_registro,
-      ecommerce_products.estado,
-      ecommerce_products.url as 'products_url'
-  FROM 
-      ecommerce_products
-  INNER JOIN 
-      ecommerce_categories ON ecommerce_products.id_categorias = ecommerce_categories.id
-  INNER JOIN 
-      ecommerce_images ON ecommerce_products.id = ecommerce_images.id_producto`,
+      ecommerce_products.id,
+      ecommerce_products.name,
+          ecommerce_categories.name 'category_name',
+              ecommerce_categories.url 'category_url',
+              ecommerce_products.price,
+              ecommerce_products.description,
+              ecommerce_products.date_registered,
+              ecommerce_products.url
+      FROM ecommerce_products
+      INNER JOIN ecommerce_categories ON ecommerce_categories.id = ecommerce_products.id_category`,
     );
-    console.log({ list });
-    return list;
+
+    let productsFinally: ProductDto[] = await Promise.all(
+      resultQuery.map(async (item) => {
+        const images = await this.findImages(item.id);
+        images.map((itemImage) => {
+          return {
+            url: itemImage.image,
+          };
+        });
+
+        return {
+          name: item.name,
+          category: {
+            name: item.category_name,
+            url: item.category_url,
+          },
+          images: images,
+          price: item.price,
+          description: item.description,
+          date_registered: item.date_registered,
+          url: item.url,
+        };
+      }),
+    );
+
+    console.log('productsFinally=>>', productsFinally);
+    return productsFinally;
+  }
+
+  async findImages(id: string) {
+    const images = await this.dataSource.query(
+      `SELECT image FROM ecommerce_images where ecommerce_images.id_product = ?`,
+      [id],
+    );
+    return images;
   }
 }

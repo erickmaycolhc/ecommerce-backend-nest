@@ -1,9 +1,20 @@
 export interface ProductDto {
   id: number;
-  nombre_del_producto: string;
-  id_categorias: number;
-  precio: string;
-  descripcion: string;
-  fecha_de_registro: Date;
-  estado: boolean;
+  name: string;
+  category: Category;
+  images: Image[];
+  price: string;
+  description: string;
+  date_registered: Date;
+  state: Boolean;
+  url: string;
+}
+
+export interface Category {
+  name: string;
+  url: string;
+}
+
+export interface Image {
+  url: string;
 }
