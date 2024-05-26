@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { ProductDto } from './dto/product';
 
@@ -12,8 +12,24 @@ export class ProductsService {
 
   async findAllProducts(): Promise<ProductDto[]> {
     const list = await this.dataSource.query(
-      `SELECT * FROM ecommerce_products`,
+      `SELECT 
+      ecommerce_products.nombre_del_producto as 'products_name',
+      ecommerce_categories.nombre as 'category_name',
+      ecommerce_categories.url as 'category_url',
+      ecommerce_images.imagen as 'url',
+    ecommerce_products.precio,
+      ecommerce_products.descripcion,
+      ecommerce_products.fecha_de_registro,
+      ecommerce_products.estado,
+      ecommerce_products.url as 'products_url'
+  FROM 
+      ecommerce_products
+  INNER JOIN 
+      ecommerce_categories ON ecommerce_products.id_categorias = ecommerce_categories.id
+  INNER JOIN 
+      ecommerce_images ON ecommerce_products.id = ecommerce_images.id_producto`,
     );
+    console.log({ list });
     return list;
   }
 }
