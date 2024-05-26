@@ -11,12 +11,12 @@ export class ProductsController {
     return this.productsService.findAllProducts();
   }
 
-  @Get('id/:id')
-  findByIdProduct(@Param('id') id: string) {
-    return this.productsService.findByIdProduct(id);
+  @Get('category/:urlCategory')
+  findByUrlCategory(@Param('urlCategory') urlCategory: string) {
+    return this.productsService.findByUrlCategory(urlCategory);
   }
 
-  @Get('url/:url')
+  @Get(':url')
   findByUrlProduct(@Param('url') url: string) {
     console.log('url =>>', url);
     return this.productsService.findByUrlProduct(url);

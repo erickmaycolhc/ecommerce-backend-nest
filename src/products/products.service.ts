@@ -62,7 +62,7 @@ export class ProductsService {
     return images;
   }
 
-  async findByIdProduct(id: string) {
+  async findByUrlCategory(urlCategory: string) {
     const resultQuery = await this.dataSource.query(
       `SELECT 
       ecommerce_products.id,
@@ -75,9 +75,9 @@ export class ProductsService {
               ecommerce_products.url
       FROM ecommerce_products
       INNER JOIN ecommerce_categories ON ecommerce_categories.id = ecommerce_products.id_category
-      where ecommerce_products.id = ?
+      where ecommerce_categories.url = ?
       `,
-      [id],
+      [urlCategory],
     );
 
     let productsFinally: ProductDto[] = await Promise.all(
@@ -104,7 +104,7 @@ export class ProductsService {
         };
       }),
     );
-
+    console.log('productsFinally=>>>', productsFinally);
     return productsFinally;
   }
 
@@ -150,7 +150,6 @@ export class ProductsService {
         };
       }),
     );
-    console.log('productsFinally=>>>', productsFinally);
     return productsFinally;
   }
 }
