@@ -1,24 +1,31 @@
-import { Body, Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
+  // Obtener todas las categorías
   @Get()
-  findAllCategories(): Promise<CategoryDto[]> {
-    return this.categoriesService.findAllCategories();
+  async findAllCategories(): Promise<CategoryDto[]> {
+    return await this.categoriesService.findAllCategories();
   }
 
-  @Get(':categoryName')
-  async findByName(@Param('categoryName') categoryName: string) {
-    const products = await this.categoriesService.findByName(categoryName);
-    console.log({ products });
-    return products;
+  // Obtener la cantidad de productos en todas las categorías
+  @Get('count-products')
+  async findAllCategoriesCountProduct() {
+    return await this.categoriesService.findAllCategoriesCountProduct();
   }
 
-  @Get('/cantidad')
-  findByCountProductCategory() {
-    return this.categoriesService.findByCountProductCategory();
+  // Obtener productos por una categoría específica
+  @Get(':category')
+  async findByName(@Param('category') category: string) {
+    return await this.categoriesService.findByName(category);
+  }
+
+  // Obtener la cantidad de productos por nombre de categoría
+  @Get(':category/count-product')
+  async findByCategoryCountProduct(@Param('category') category: string) {
+    return await this.categoriesService.findByCategoryCountProduct(category);
   }
 }

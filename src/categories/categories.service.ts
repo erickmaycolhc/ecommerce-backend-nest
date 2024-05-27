@@ -13,41 +13,22 @@ export class CategoriesService {
     const list = await this.dataSource.query(
       `SELECT * FROM ecommerce_categories`,
     );
-    console.log('liss =>>>', list);
     return list;
   }
-
-  async findByName(categoryName: string) {
+  ////
+  async findByName(category: string) {
     const product = await this.dataSource.query(
-      `SELECT
-      ecommerce_products.id,
-      ecommerce_products.name as 'products_name',
-      ecommerce_categories.name as 'category_name',
-      ecommerce_categories.url as 'category_url',
-      ecommerce_images.image as 'url',
-      ecommerce_products.price,
-      ecommerce_products.description,
-      ecommerce_products.date_registered,
-      ecommerce_products.state,
-      ecommerce_products.url as 'products_url'
-    FROM
-      ecommerce_products
-    INNER JOIN
-      ecommerce_categories ON ecommerce_products.id_category = ecommerce_categories.id
-    INNER JOIN
-      ecommerce_images ON ecommerce_products.id = ecommerce_images.id_product
-    where  ecommerce_categories.url = ?`,
-      [categoryName],
+      `SELECT * FROM ecommerce_categories WHERE ecommerce_categories.url = ?`,
+      [category],
     );
-    console.log('product 22222222 ===> ', product);
     return product;
   }
 
-  async findByCountProductCategory(): Promise<CategoryCountDto[]> {
+  async findAllCategoriesCountProduct(): Promise<CategoryCountDto[]> {
     const consultaQuery = await this.dataSource.query(`
     SELECT * FROM ecommerce_categories
     `);
-
+    console.log('consultaQuery', consultaQuery);
     let finallyCantidadProductos = await Promise.all(
       consultaQuery.map(async (item) => {
         const cantidad = await this.counterProductCategory(item.id);
@@ -58,11 +39,10 @@ export class CategoriesService {
           date_registered: item.date_registered,
           state: item.state,
           url: item.url,
-          producer_quantity: cantidad, //Number(cantidad) para convertir a number
+          producer_quantity: Number(cantidad), //Number(cantidad) para convertir a number
         };
       }),
     );
-    console.log('finallyCantidadProductos=>>', finallyCantidadProductos);
     return finallyCantidadProductos;
   }
 
@@ -72,7 +52,32 @@ export class CategoriesService {
       SELECT COUNT(*) as count FROM ecommerce_products WHERE id_category = ?`,
       [id],
     );
-    console.log('cantidadProductos =>', result);
     return result[0].count;
+  }
+
+  async findByCategoryCountProduct(
+    category: string,
+  ): Promise<CategoryCountDto[]> {
+    const consultaQuery = await this.dataSource.query(
+      `
+    SELECT * FROM ecommerce_categories where ecommerce_categories.url = ?
+    `,
+      [category],
+    );
+    let finallyCantidadProductos = await Promise.all(
+      consultaQuery.map(async (item) => {
+        const cantidad = await this.counterProductCategory(item.id);
+
+        return {
+          id: item.id,
+          name: item.name,
+          date_registered: item.date_registered,
+          state: item.state,
+          url: item.url,
+          producer_quantity: Number(cantidad), //Number(cantidad) para convertir a number
+        };
+      }),
+    );
+    return finallyCantidadProductos;
   }
 }

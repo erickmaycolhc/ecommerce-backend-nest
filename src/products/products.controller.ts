@@ -18,7 +18,6 @@ export class ProductsController {
 
   @Get(':url')
   findByUrlProduct(@Param('url') url: string) {
-    console.log('url =>>', url);
     return this.productsService.findByUrlProduct(url);
   }
 }
